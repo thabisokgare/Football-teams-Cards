@@ -28,7 +28,7 @@ const myFavoriteFootballTeam = {
       isCaptain: false,
       nickname: null,
     },
-     {
+    {
       name: "Ricardo Bochini",
       position: "midfielder",
       number: 3,
@@ -170,13 +170,13 @@ const myFavoriteFootballTeam = {
     },
   ],
 };
- 
+
 Object.freeze(myFavoriteFootballTeam);
 
 
 
-const {team, sport, year, players} = myFavoriteFootballTeam;
-const {coachName, matches} = myFavoriteFootballTeam.headCoach;
+const { team, sport, year, players } = myFavoriteFootballTeam;
+const { coachName, matches } = myFavoriteFootballTeam.headCoach;
 
 typeOfSport.textContent = sport;
 teamName.textContent = team;
@@ -185,13 +185,59 @@ headCoach.textContent = coachName;
 
 
 const setPlayerCards = (arr = players) => {
-    playerCards.innerHTML += arr.map(({name, position, number, isCaptain, nickname}) => {
-         `<div class="player-card">
-            <h2>  </h2>
-         
-         </div>`
-    });
+  // This function uses the Array.prototype.map() method to iterate over each player in the 'players' array and generate HTML for each player's card.
+  return arr.map(({ name, position, number, isCaptain, nickname }) => {
+    // This is a template for each player's card.
+    `<div class="player-card">
+            <h2>${isCaptain ? "(Captain)" : ""}</h2>
+            ${name}
+            </h2>
+            <p>Position: ${position}</p>
+            <p>Number: ${number}</p>
+            <p>Nickname: ${nickname ? nickname : "N/A"}</p>
+             
+        </div>`
+  }).join(''); // This method concatenates all the generated HTML strings into a single string.
 }
+
+/**
+ * This function listens for a change event on the 'playersDropdownList' element and logs the selected value to the console.
+ *
+ * - The event object containing information about the change event.
+ */
+/**
+ * This function listens for a change event on the 'playersDropdownList' element and updates the 'playerCards' element with the appropriate player cards based on the selected value in the dropdown list.
+ *
+ * @param {Event} e - The event object containing information about the change event.
+ */
+playersDropdownList.addEventListener('change', (e) => {
+  playerCards.innerHTML = "";
+
+  switch (e.target.value) {
+    case "nickname":
+      setPlayerCards(players.filter(player => player.nickname !== null));
+      break;
+    case "forward":
+      setPlayerCards(players.filter(player => player.position === "forward"));
+      break;
+    case "midfielder":
+      setPlayerCards(players.filter(player => player.position === "midfielder"));
+      break;
+    case "defender":
+      setPlayerCards(players.filter(player => player.position === "defender"));
+      break;
+    case "goalkeeper":
+      setPlayerCards(players.filter(player => player.position === "goalkeeper"));
+      break;
+
+    default:
+      setPlayerCards();
+  }
+});
+
+
+
+
 
 
 
